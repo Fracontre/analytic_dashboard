@@ -12,7 +12,7 @@ El dashboard busca **apoyar el análisis exploratorio y comparativo**, permitien
 - Cambios estructurales entre niveles
 - Patrones de crecimiento y concentración
 
-Este proyecto tiene fines **demostrativos y de evaluación técnica**, y no representa información institucional real.
+Este proyecto utiliza exclusivamente datos abiertos de https://datosabiertos.mineduc.cl/titulados-en-educacion-superior/.
 
 ---
 
@@ -64,29 +64,166 @@ El resultado es un conjunto de tablas optimizadas para un **modelo dimensional t
 
 ## 4. Modelo analítico (Power BI)
 
-El dashboard utiliza un **modelo en estrella**, compuesto por:
+El dashboard se construye sobre un **modelo analítico de tipo estrella extendida**, en el cual **múltiples tablas de hechos temáticas** comparten dimensiones comunes (tiempo y territorio). Este diseño permite analizar el fenómeno desde distintos ejes sin perder coherencia ni rendimiento.
 
-### 4.1 Tabla de hechos
-- `fact_registros`
-  - Métrica principal: total de registros
-  - Claves de tiempo y territorio
+El modelo prioriza:
+- Claridad semántica  
+- Separación por dominio analítico  
+- Escalabilidad y mantenibilidad  
+
+---
+
+### 4.1 Tablas de hechos
+
+El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregados y listas para análisis:
+
+#### 4.1.1 `fact_titulados_anual`
+- Granularidad: **Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Análisis de tendencias temporales
+  - Cálculo de crecimiento interanual (YoY)
+  - Crecimiento acumulado
+
+---
+
+#### 4.1.2 `fact_titulados_region`
+- Granularidad: **Región – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Comparaciones interregionales
+  - Participación territorial
+  - Rankings regionales
+
+---
+
+#### 4.1.3 `fact_titulados_provincia`
+- Granularidad: **Provincia – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Análisis territorial intermedio
+  - Identificación de polos provinciales
+
+---
+
+#### 4.1.4 `fact_titulados_comuna`
+- Granularidad: **Comuna – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Análisis territorial fino
+  - Rankings comunales
+  - Detección de concentración local
+
+---
+
+#### 4.1.5 `fact_nivel_formacion`
+- Granularidad: **Nivel de formación – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Comparación entre niveles formativos
+  - Análisis de la composición estructural
+
+---
+
+#### 4.1.6 `fact_modalidad_jornada`
+- Granularidad: **Modalidad / Jornada – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Comparaciones por modalidad académica
+  - Análisis por tipo de jornada
+
+---
+
+#### 4.1.7 `fact_tipo_institucion`
+- Granularidad: **Tipo de institución – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Análisis por tipo institucional
+  - Participación relativa por categoría
+
+---
+
+#### 4.1.8 `fact_area_conocimiento`
+- Granularidad: **Área de conocimiento – Año**
+- Métrica principal:
+  - `total_titulados`
+- Uso:
+  - Análisis disciplinar
+  - Comparaciones entre áreas de estudio
+  - Identificación de áreas predominantes
+
+---
 
 ### 4.2 Tablas de dimensión
-- `dim_tiempo`
-  - Año
-  - Periodo
-- `dim_territorio`
-  - Región
-  - Provincia
-  - Comuna
-- `dim_nivel`
-  - Nivel global
-  - Subcategorías
 
-Las relaciones son:
-- 1 a muchos
-- Dirección de filtro simple
-- Sin ambigüedades ni relaciones bidireccionales innecesarias
+Las tablas de hechos se relacionan mediante **dimensiones compartidas**, garantizando consistencia analítica entre los distintos dominios.
+
+#### 4.2.1 `dim_tiempo`
+- `anio`
+- `periodo`
+- `fecha` (campo continuo)
+
+Uso principal:
+- Series temporales
+- Cálculo de variación interanual (YoY)
+- Crecimiento acumulado
+
+---
+
+#### 4.2.2 `dim_territorio`
+- `region`
+- `provincia`
+- `comuna`
+
+Estructura jerárquica:
+Uso principal:
+- Drill-down territorial
+- Comparaciones geográficas
+
+---
+
+#### 4.2.3 Dimensiones analíticas específicas
+Dependiendo de la tabla de hechos, se utilizan dimensiones adicionales como:
+- `dim_nivel_formacion`
+- `dim_modalidad`
+- `dim_tipo_institucion`
+- `dim_area_conocimiento`
+
+Estas dimensiones permiten la segmentación semántica sin duplicar métricas.
+
+---
+
+### 4.3 Relaciones del modelo
+
+- Tipo de relación: **1 a muchos**
+- Dirección de filtro: **simple (single direction)**
+- No se utilizan:
+  - Relaciones bidireccionales
+  - Relaciones ambiguas
+  - Tablas puente innecesarias
+
+Este diseño:
+- Evita problemas de doble conteo
+- Mejora el rendimiento del modelo
+- Facilita la trazabilidad analítica
+
+---
+
+### 4.4 Justificación del diseño
+
+Se opta por un modelo con **múltiples tablas de hechos temáticas** en lugar de una tabla única consolidada debido a que:
+
+- Cada dominio analítico presenta granularidades distintas
+- Se reduce la complejidad de filtros y visuales
+- Se mejora la legibilidad del modelo
+- Se facilita la extensión futura del dashboard
 
 ---
 
