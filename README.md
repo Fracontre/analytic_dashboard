@@ -71,8 +71,6 @@ El modelo prioriza:
 - Separación por dominio analítico  
 - Escalabilidad y mantenibilidad  
 
----
-
 ### 4.1 Tablas de hechos
 
 El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregados y listas para análisis:
@@ -86,8 +84,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
   - Cálculo de crecimiento interanual (YoY)
   - Crecimiento acumulado
 
----
-
 #### 4.1.2 `fact_titulados_region`
 - Granularidad: **Región – Año**
 - Métrica principal:
@@ -97,8 +93,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
   - Participación territorial
   - Rankings regionales
 
----
-
 #### 4.1.3 `fact_titulados_provincia`
 - Granularidad: **Provincia – Año**
 - Métrica principal:
@@ -106,8 +100,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
 - Uso:
   - Análisis territorial intermedio
   - Identificación de polos provinciales
-
----
 
 #### 4.1.4 `fact_titulados_comuna`
 - Granularidad: **Comuna – Año**
@@ -118,8 +110,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
   - Rankings comunales
   - Detección de concentración local
 
----
-
 #### 4.1.5 `fact_nivel_formacion`
 - Granularidad: **Nivel de formación – Año**
 - Métrica principal:
@@ -127,8 +117,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
 - Uso:
   - Comparación entre niveles formativos
   - Análisis de la composición estructural
-
----
 
 #### 4.1.6 `fact_modalidad_jornada`
 - Granularidad: **Modalidad / Jornada – Año**
@@ -138,8 +126,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
   - Comparaciones por modalidad académica
   - Análisis por tipo de jornada
 
----
-
 #### 4.1.7 `fact_tipo_institucion`
 - Granularidad: **Tipo de institución – Año**
 - Métrica principal:
@@ -147,8 +133,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
 - Uso:
   - Análisis por tipo institucional
   - Participación relativa por categoría
-
----
 
 #### 4.1.8 `fact_area_conocimiento`
 - Granularidad: **Área de conocimiento – Año**
@@ -158,8 +142,6 @@ El modelo incorpora las siguientes **tablas de hechos**, todas con datos agregad
   - Análisis disciplinar
   - Comparaciones entre áreas de estudio
   - Identificación de áreas predominantes
-
----
 
 ### 4.2 Tablas de dimensión
 
@@ -175,8 +157,6 @@ Uso principal:
 - Cálculo de variación interanual (YoY)
 - Crecimiento acumulado
 
----
-
 #### 4.2.2 `dim_territorio`
 - `region`
 - `provincia`
@@ -187,8 +167,6 @@ Uso principal:
 - Drill-down territorial
 - Comparaciones geográficas
 
----
-
 #### 4.2.3 Dimensiones analíticas específicas
 Dependiendo de la tabla de hechos, se utilizan dimensiones adicionales como:
 - `dim_nivel_formacion`
@@ -197,8 +175,6 @@ Dependiendo de la tabla de hechos, se utilizan dimensiones adicionales como:
 - `dim_area_conocimiento`
 
 Estas dimensiones permiten la segmentación semántica sin duplicar métricas.
-
----
 
 ### 4.3 Relaciones del modelo
 
@@ -213,8 +189,6 @@ Este diseño:
 - Evita problemas de doble conteo
 - Mejora el rendimiento del modelo
 - Facilita la trazabilidad analítica
-
----
 
 ### 4.4 Justificación del diseño
 
